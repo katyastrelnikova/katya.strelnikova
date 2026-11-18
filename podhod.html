@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мой подход — Катя Стрельникова</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--white:#ffffff;--cream:#f7f4ee;--ink:#15140f;--ink-soft:#575349;--line:#e7e3da;--indigo:#4b3bd6;--indigo-deep:#3a2cc0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.05}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 44px}
+  @media(max-width:600px){.wrap{padding:0 22px}}
+  mark{background:var(--indigo);color:#fff;padding:.04em .12em;border-radius:5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .hl{color:var(--indigo)}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:16px 44px;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-family:'Montserrat';font-weight:800;font-size:17px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .logo-short{display:none}
+  .navlinks{display:flex;gap:24px;font-size:14px;font-weight:500}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.active{color:var(--indigo)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px}
+  @media(max-width:900px){.navlinks{display:none}.burger{display:flex}}
+  @media(max-width:600px){.nav-in{padding:14px 22px}.logo-full{display:none}.logo-short{display:inline}}
+  .mobile-menu{position:fixed;inset:0;z-index:99;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);visibility:hidden}
+  .mobile-menu.open{transform:translateX(0);visibility:visible}
+  .mobile-menu a{color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:30px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  body.locked{overflow:hidden}
+
+  .btn{display:inline-block;background:var(--indigo);color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;transition:transform .2s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--indigo-deep)}
+  .btn-ghost-light{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff}
+  .btn-ghost-light:hover{background:rgba(255,255,255,.1);border-color:#fff}
+
+  /* HERO страницы */
+  .page-hero{padding:150px 0 50px;display:grid;grid-template-columns:1fr auto;gap:50px;align-items:center}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);margin-bottom:20px}
+  .page-hero h1{font-size:clamp(40px,6vw,76px);margin-bottom:26px}
+  .page-hero .intro{font-size:clamp(17px,2vw,20px);color:var(--ink-soft);max-width:620px}
+  .hero-round{width:min(400px,42vw);aspect-ratio:1;border-radius:50%;background-size:cover;background-position:center top;flex-shrink:0}
+  @media(max-width:760px){.page-hero{grid-template-columns:1fr;gap:34px}.hero-round{width:220px;order:-1}}
+
+  /* аккордеон фактов */
+  .facts{border-top:1px solid var(--line);margin-top:30px}
+  .fact{border-bottom:1px solid var(--line)}
+  .fact summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:20px;padding:26px 0}
+  .fact summary::-webkit-details-marker{display:none}
+  .fact summary h2{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.15;font-size:clamp(20px,2.8vw,30px);flex:1;transition:color .2s}
+  .fact[open] summary h2,.fact summary:hover h2{color:var(--indigo)}
+  .fact .sign{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);position:relative;margin-top:4px;transition:border-color .2s,background .2s}
+  .fact summary:hover .sign,.fact[open] .sign{border-color:var(--indigo)}
+  .fact .sign::before,.fact .sign::after{content:'';position:absolute;top:50%;left:50%;width:12px;height:1.5px;background:var(--ink-soft);transform:translate(-50%,-50%);transition:transform .25s,background .2s}
+  .fact .sign::after{transform:translate(-50%,-50%) rotate(90deg)}
+  .fact summary:hover .sign::before,.fact summary:hover .sign::after,.fact[open] .sign::before,.fact[open] .sign::after{background:var(--indigo)}
+  .fact[open] .sign::after{transform:translate(-50%,-50%) rotate(0)}
+  .fact .body{padding:0 0 32px 50px;max-width:820px}
+  .fact .body p{color:var(--ink-soft);margin-bottom:14px;font-size:17px}
+  .means{margin-top:18px;padding-left:22px;border-left:3px solid var(--indigo);font-size:17px}
+  .means b{color:var(--ink);font-weight:700}
+  .note{font-size:14px;color:var(--ink-soft);font-style:italic;margin-top:10px}
+  @media(max-width:600px){.fact .body{padding-left:0}}
+
+  /* интро-текст страницы */
+  .lead-block{max-width:780px;padding:10px 0 20px}
+  .lead-block p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:18px}
+  .lead-block p strong,.lead-block p b{color:var(--ink);font-weight:600}
+  .lead-block .big{font-size:clamp(19px,2.2vw,22px);color:var(--ink);font-weight:500;line-height:1.5}
+
+  /* врезка с плашкой */
+  .banner{max-width:900px;margin:24px 0 8px}
+  .banner p{font-family:'Montserrat';font-weight:700;font-size:clamp(20px,2.6vw,28px);line-height:1.7;letter-spacing:-0.01em;color:var(--ink)}
+  .banner mark{background:var(--indigo);color:#fff;padding:.1em .18em;border-radius:6px;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.1}
+
+  /* блок текст + фото (как на главной) */
+  .split{display:grid;grid-template-columns:1fr .82fr;gap:56px;align-items:stretch;padding:30px 0}
+  .split>div:first-child{display:flex;flex-direction:column;justify-content:center}
+  .split.flip .split-ph{order:-1}
+  .split-ph{border-radius:22px;background-size:cover;background-position:center 15%;min-height:460px}
+  .split p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:16px}
+  .split p.big{font-size:clamp(19px,2.2vw,22px);color:var(--ink);font-weight:500;line-height:1.5}
+  @media(max-width:820px){.split{grid-template-columns:1fr;gap:28px}.split.flip .split-ph{order:0}.split-ph{max-width:420px;aspect-ratio:3/4;min-height:0}}
+
+  /* крупная врезка-цитата */
+  .pullquote{max-width:900px;margin:56px 0;font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;font-size:clamp(26px,4.2vw,46px);line-height:1.12;color:var(--ink)}
+  .pullquote .after{display:block;font-family:'Golos Text';font-weight:400;font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);line-height:1.6;margin-top:22px;max-width:680px;letter-spacing:0}
+
+  /* список-approaches (доказательные подходы) */
+  .methods{background:var(--cream);border-radius:24px;padding:40px 44px;margin:36px 0}
+  .methods .mh{font-family:'Montserrat';font-weight:800;font-size:clamp(22px,2.8vw,30px);letter-spacing:-0.01em;margin-bottom:26px;line-height:1.15}
+  .methods ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 40px}
+  .methods li{position:relative;padding-left:26px;color:var(--ink-soft);font-size:16px}
+  .methods li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--indigo)}
+  .methods .after{margin-top:24px;font-size:16px;color:var(--ink-soft)}
+  @media(max-width:600px){.methods{padding:32px 24px}.methods ul{grid-template-columns:1fr}}
+
+  /* секционный заголовок */
+  .sec-head{font-size:clamp(26px,3.6vw,40px);margin:70px 0 30px;line-height:1.1;font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em}
+  .sec-intro{max-width:720px;color:var(--ink-soft);font-size:18px;margin:-16px 0 30px}
+  .proof{background:var(--cream);border-radius:20px;padding:32px 36px;margin:36px 0}
+  .proof p{font-size:17px;color:var(--ink-soft);max-width:640px;margin-bottom:18px}
+  .proof-links{display:flex;gap:28px;flex-wrap:wrap}
+  .proof-links a{font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--indigo);text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .proof-links a .arr{transition:transform .2s}
+  .proof-links a:hover{color:var(--indigo-deep)}
+  .proof-links a:hover .arr{transform:translateX(4px)}
+  @media(max-width:600px){.proof{padding:28px 24px}}
+
+  /* чеклист «узнаёте себя» */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .check{display:flex;gap:14px;align-items:flex-start;background:var(--cream);border-radius:14px;padding:18px 20px;font-size:16px;color:var(--ink)}
+  .check .q{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--indigo);color:#fff;font-family:'Montserrat';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  @media(max-width:600px){.checks{grid-template-columns:1fr}}
+
+  /* инлайн-ссылка */
+  .inline-link{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--indigo);text-decoration:none}
+  .inline-link .arr{transition:transform .2s}
+  .inline-link:hover{color:var(--indigo-deep)}
+  .inline-link:hover .arr{transform:translateX(4px)}
+
+  /* приглашение «приходите, если» */
+  .invite{max-width:860px;margin:40px 0}
+  .invite-big{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;font-size:clamp(24px,3.6vw,38px);line-height:1.18;color:var(--ink);margin-bottom:22px}
+  .invite-rest{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);line-height:1.6}
+
+  /* финальный разворот «вам ко мне, если» */
+  .wide-text{max-width:780px;margin:30px 0}
+  .wide-text p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:16px}
+  .wide-text p.accent{color:var(--ink);font-weight:500}
+
+  /* финал */
+  .cta{background:var(--ink);color:#fff;border-radius:28px;padding:70px 56px;text-align:left;margin:80px 0}
+  .cta h2{color:#fff;font-size:clamp(28px,4vw,44px);max-width:22ch;margin:0 0 20px}
+  .cta p{color:rgba(255,255,255,.72);max-width:600px;margin:0 0 30px;font-size:18px}
+  @media(max-width:600px){.cta{padding:48px 26px}}
+
+  footer{background:var(--cream);padding:70px 0 44px}
+  .foot-meta{color:var(--ink-soft);font-size:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+  @media(max-width:720px){.foot-meta{grid-template-columns:1fr;gap:18px}}
+  .foot-name{font-family:'Montserrat';font-weight:700;color:var(--ink)}
+  .foot-links{display:flex;flex-direction:column;gap:8px}
+  .foot-links a{color:var(--ink-soft);text-decoration:none}
+  .foot-links a:hover{color:var(--indigo)}
+  .foot-legal{line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="index.html" class="logo"><span class="logo-full">Хэлс-коуч Катя Стрельникова</span><span class="logo-short">Катя Стрельникова</span></a>
+    <div class="navlinks">
+      
+      <a href="about.html">Обо мне</a><a href="podhod.html" class="active">Мой подход</a><a href="ceny.html">Форматы</a><a href="kontent.html">Контент</a><a href="media.html">Для медиа</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Обо мне</a>
+  <a href="podhod.html">Мой подход</a>
+  <a href="ceny.html">Форматы и цены</a>
+  <a href="kontent.html">Бесплатный контент</a>
+  <a href="media.html">Для медиа</a>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="page-hero" style="grid-template-columns:1fr;padding-bottom:20px">
+    <div>
+      <div class="kicker">Мой подход</div>
+      <h1>Приключение, исследование, эксперимент</h1>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- интро -->
+  <div class="lead-block">
+    <p>Ко мне приходят с очень конкретными запросами: начать высыпаться, навести порядок в еде, найти гармоничные отношения с работой, начать двигаться. Но благодарят потом за другое — за ясность, за возвращённое чувство себя, за разрешение быть неидеальной.</p>
+  </div>
+
+  <!-- врезка с плашкой -->
+  <div class="banner">
+    <p><mark>Проблему нельзя решить на том уровне, на котором она возникла.</mark> На уровне поведения мы видим только симптомы. А решается всё обычно уровнем ниже, там, где смыслы и отношения с собой.</p>
+  </div>
+
+  <!-- примеры — текст + фото -->
+  <div class="split" style="padding-top:34px">
+    <div>
+      <p>Например, приходит девушка с запросом «лучше спать»: ложиться пораньше, убрать телефон, выработать ритуалы. Копаем, и выясняется, что «убрать телефон» значит остаться наедине с тревогой. Телефон — анестезия. Дело не в гигиене сна, а в том, чтобы стало не страшно отключиться: разрешить себе быть достаточной, поставить точку в конце дня, даже если ничего грандиозного не случилось.</p>
+      <p>Или запрос «убрать сахар, добавить овощей». Внутри другое: каждый приём пищи как экзамен, где считаешь, сравниваешь и стыдишься. Ещё один план питания тут не сработает.</p>
+      <p class="big">Мы начинаем с того, что разбираемся, что именно работает и не работает у вас, и вместе находим способ прийти к результату.</p>
+    </div>
+    <div class="split-ph" style="background-image:url('img/appr_sit.jpg')"></div>
+  </div>
+
+  <!-- доказательные подходы -->
+  <div class="methods">
+    <div class="mh">В работе я опираюсь на доказательные подходы:</div>
+    <ul>
+      <li>свежие научные данные о поведении и привычках</li>
+      <li>коучинг по стандартам ICF</li>
+      <li>транстеоретическую модель изменений</li>
+      <li>мотивационное консультирование</li>
+      <li>элементы КПТ и позитивной психологии</li>
+      <li>инструменты осознанности и самосострадания, которые практикую с 2018 года</li>
+    </ul>
+    <p class="after">Ну и, конечно, продуктовый подход, вынесенный из 15+ лет в маркетинге: строим гипотезы, ставим эксперименты, анализируем и выбираем те 20%, что дают 80% результата именно для вас.</p>
+  </div>
+
+  <!-- крупная врезка -->
+  <div class="pullquote">
+    Если бы дело было в силе воли и правильном алгоритме, мы бы все давно «были миллионерами с накачанным прессом».
+    <span class="after">Устойчивые изменения начинаются не со списка из 10 пунктов, а с честного взгляда на себя. Когда мы знакомимся с собой, разрешаем себе хотеть, выбирать, быть, — поведение подтягивается.</span>
+  </div>
+
+  <!-- Как это выглядит изнутри -->
+  <h2 class="sec-head">Как это выглядит изнутри</h2>
+  <div class="split flip">
+    <div>
+      <p>Это не лекции и не директивы. Скорее совместное исследование: я задаю вопросы, возвращаю вас к главному, помогаю увидеть ваши сильные стороны и причинно-следственные связи, чтобы дальше вы могли выбирать сами.</p>
+      <p>Это регулярные встречи и разговоры о вашем здоровье, энергии, о будущем и вас в нём, о ценностях и целях — о том, о чём обычно ни с кем не говоришь вслух и конструктивно.</p>
+      <p class="accent" style="color:var(--ink);font-weight:500">Вы не получаете готовых ответов — вы учитесь находить свои. Это и есть то, что остаётся с вами, когда работа со мной заканчивается.</p>
+      <a href="ceny.html" class="inline-link">Посмотреть форматы и цены <span class="arr">→</span></a>
+    </div>
+    <div class="split-ph" style="background-image:url('img/appr_relax.jpg')"></div>
+  </div>
+
+  <!-- отзывы и кейсы -->
+  <div class="proof">
+    <p>Если для вас важны доказательства, а не слова: у меня много отзывов и несколько разобранных кейсов. Почитайте — вдруг узнаете в них себя.</p>
+    <div class="proof-links">
+      <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTYwMzQ1MTI4ODc1OTI1?avpt=d2loaGRoeTN2cGl5" target="_blank" rel="noopener">Отзывы <span class="arr">→</span></a>
+      <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4NjMyOTM3NTUwMDM3OTE1?jplx=cWEyd21ndjV5aXA1" target="_blank" rel="noopener">Кейсы <span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- Чем отличается мой подход — аккордеон -->
+  <h2 class="sec-head">Чем отличается мой подход</h2>
+  <p class="sec-intro">Коучи бывают разные. Вот что отличает мою работу:</p>
+
+  <div class="facts">
+    <details class="fact" open>
+      <summary><h2>Она про вас, а не про готовую программу</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Никаких универсальных планов. Мы собираем ваш образ жизни под вас, поэтому подходит даже тем, кто уже разочаровался в других методах.</p>
+      </div>
+    </details>
+    <details class="fact">
+      <summary><h2>Я воспитываю вашу веру в себя, а не зависимость от меня</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Моя цель не сделать из вас вечного клиента, а помочь вам стать опорой самой себе. Чтобы вы могли на себя положиться и без меня.</p>
+      </div>
+    </details>
+    <details class="fact">
+      <summary><h2>Работаем с образом жизни целиком, а не чиним отдельные сферы</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Сон, еда, движение, отдых, отношения с собой связаны. Поэтому мы не латаем одно, а выстраиваем устойчивое целое.</p>
+      </div>
+    </details>
+    <details class="fact">
+      <summary><h2>Нормализуем ошибки и неидеальность</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Мы взращиваем интерес к изменениям, а не страх провала. Откат здесь не катастрофа, а часть исследования.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Вам ко мне, если -->
+  <h2 class="sec-head">Вам ко мне, если</h2>
+  <div class="checks">
+    <div class="check"><span class="q">?</span>Всё знаете, но не делаете</div>
+    <div class="check"><span class="q">?</span>«Надо» звучит громче, чем «хочу»</div>
+    <div class="check"><span class="q">?</span>Любой прогресс обнуляется за один вечер</div>
+    <div class="check"><span class="q">?</span>Цель звучит как экзамен: «правильно поесть», «правильно лечь»</div>
+    <div class="check"><span class="q">?</span>Усталость не уходит, сколько ни отлёживайся</div>
+    <div class="check"><span class="q">?</span>Делаете всё правильно, а радости ноль</div>
+    <div class="check"><span class="q">?</span>Или идеально, или никак</div>
+  </div>
+  <div class="invite">
+    <p class="invite-big">Приходите, если вы готовы не искать очередной правильный план, а честно посмотреть на то, что происходит с вами и вашей жизнью.</p>
+    <p class="invite-rest">Готовы исследовать, а не заставлять себя. Пробовать, ошибаться и пробовать снова, не вынося себе приговор безнадёжности. Готовы учиться верить, что с вами всё в порядке, и заботиться о себе даже тогда, когда себе не нравитесь.</p>
+  </div>
+
+</div>
+
+<!-- ФИНАЛ -->
+<div class="wrap">
+  <div class="cta">
+    <h2>Давайте познакомимся и поймём, по пути ли нам</h2>
+    <p>Необязательно сразу выбирать формат. Можно начать со встречи-знакомства — без обязательств, чтобы почувствовать, как мы работаем вместе.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn">Записаться на встречу-знакомство</a>
+      <a href="ceny.html" class="btn btn-ghost-light">Форматы и цены →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-meta">
+      <div class="foot-col"><span class="foot-name">Хэлс-коуч Катя Стрельникова</span></div>
+      <div class="foot-col foot-links">
+        <a href="https://t.me/balancenorm" target="_blank" rel="noopener">Телеграм-канал «На балансе»</a>
+        <a href="https://www.instagram.com/katya.strelnikova/" target="_blank" rel="noopener">Инстаграм</a>
+      </div>
+      <div class="foot-col foot-legal">
+        ИП Стрельникова Екатерина Юрьевна<br>ИНН 504212029429<br>ОГРНИП 325508100300251
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
+  burger.addEventListener('click',()=>{menu.classList.toggle('open');document.body.classList.toggle('locked');});
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');document.body.classList.remove('locked');}));
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обо мне — Катя Стрельникова</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--white:#ffffff;--cream:#f7f4ee;--ink:#15140f;--ink-soft:#575349;--line:#e7e3da;--indigo:#4b3bd6;--indigo-deep:#3a2cc0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.05}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 44px}
+  @media(max-width:600px){.wrap{padding:0 22px}}
+  mark{background:var(--indigo);color:#fff;padding:.04em .12em;border-radius:5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .hl{color:var(--indigo)}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:16px 44px;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-family:'Montserrat';font-weight:800;font-size:17px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .logo-short{display:none}
+  .navlinks{display:flex;gap:24px;font-size:14px;font-weight:500}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.active{color:var(--indigo)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px}
+  @media(max-width:900px){.navlinks{display:none}.burger{display:flex}}
+  @media(max-width:600px){.nav-in{padding:14px 22px}.logo-full{display:none}.logo-short{display:inline}}
+  .mobile-menu{position:fixed;inset:0;z-index:99;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);visibility:hidden}
+  .mobile-menu.open{transform:translateX(0);visibility:visible}
+  .mobile-menu a{color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:30px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  body.locked{overflow:hidden}
+
+  .btn{display:inline-block;background:var(--indigo);color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;transition:transform .2s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--indigo-deep)}
+
+  /* HERO страницы */
+  .page-hero{padding:150px 0 50px;display:grid;grid-template-columns:1fr auto;gap:50px;align-items:center}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);margin-bottom:20px}
+  .page-hero h1{font-size:clamp(40px,6vw,76px);margin-bottom:26px}
+  .page-hero .intro{font-size:clamp(17px,2vw,20px);color:var(--ink-soft);max-width:620px}
+  .hero-round{width:min(400px,42vw);aspect-ratio:1;border-radius:50%;background-size:cover;background-position:center top;flex-shrink:0}
+  @media(max-width:760px){.page-hero{grid-template-columns:1fr;gap:34px}.hero-round{width:220px;order:-1}}
+
+  /* аккордеон фактов */
+  .facts{border-top:1px solid var(--line);margin-top:30px}
+  .fact{border-bottom:1px solid var(--line)}
+  .fact summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:20px;padding:26px 0}
+  .fact summary::-webkit-details-marker{display:none}
+  .fact summary h2{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.15;font-size:clamp(20px,2.8vw,30px);flex:1;transition:color .2s}
+  .fact[open] summary h2,.fact summary:hover h2{color:var(--indigo)}
+  .fact .sign{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);position:relative;margin-top:4px;transition:border-color .2s,background .2s}
+  .fact summary:hover .sign,.fact[open] .sign{border-color:var(--indigo)}
+  .fact .sign::before,.fact .sign::after{content:'';position:absolute;top:50%;left:50%;width:12px;height:1.5px;background:var(--ink-soft);transform:translate(-50%,-50%);transition:transform .25s,background .2s}
+  .fact .sign::after{transform:translate(-50%,-50%) rotate(90deg)}
+  .fact summary:hover .sign::before,.fact summary:hover .sign::after,.fact[open] .sign::before,.fact[open] .sign::after{background:var(--indigo)}
+  .fact[open] .sign::after{transform:translate(-50%,-50%) rotate(0)}
+  .fact .body{padding:0 0 32px 50px;max-width:820px}
+  .fact .body p{color:var(--ink-soft);margin-bottom:14px;font-size:17px}
+  .means{margin-top:18px;padding-left:22px;border-left:3px solid var(--indigo);font-size:17px}
+  .means b{color:var(--ink);font-weight:700}
+  .note{font-size:14px;color:var(--ink-soft);font-style:italic;margin-top:10px}
+  @media(max-width:600px){.fact .body{padding-left:0}}
+
+  /* галерея в конце */
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:50px 0 0}
+  .gallery .ph{aspect-ratio:4/5;border-radius:18px;background-size:cover;background-position:center top}
+  @media(max-width:600px){.gallery{grid-template-columns:1fr}}
+
+  /* финал */
+  .cta{background:var(--ink);color:#fff;border-radius:28px;padding:70px 56px;text-align:left;margin:80px 0}
+  .cta h2{color:#fff;font-size:clamp(28px,4vw,44px);max-width:22ch;margin:0 0 20px}
+  .cta p{color:rgba(255,255,255,.72);max-width:600px;margin:0 0 30px;font-size:18px}
+  @media(max-width:600px){.cta{padding:48px 26px}}
+
+  footer{background:var(--cream);padding:70px 0 44px}
+  .foot-meta{color:var(--ink-soft);font-size:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+  @media(max-width:720px){.foot-meta{grid-template-columns:1fr;gap:18px}}
+  .foot-name{font-family:'Montserrat';font-weight:700;color:var(--ink)}
+  .foot-links{display:flex;flex-direction:column;gap:8px}
+  .foot-links a{color:var(--ink-soft);text-decoration:none}
+  .foot-links a:hover{color:var(--indigo)}
+  .foot-legal{line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="index.html" class="logo"><span class="logo-full">Хэлс-коуч Катя Стрельникова</span><span class="logo-short">Катя Стрельникова</span></a>
+    <div class="navlinks">
+      
+      <a href="about.html" class="active">Обо мне</a><a href="podhod.html">Мой подход</a><a href="ceny.html">Форматы</a><a href="kontent.html">Контент</a><a href="media.html">Для медиа</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Обо мне</a>
+  <a href="podhod.html">Мой подход</a>
+  <a href="ceny.html">Форматы и цены</a>
+  <a href="kontent.html">Бесплатный контент</a>
+  <a href="media.html">Для медиа</a>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="page-hero">
+    <div>
+      <div class="kicker">Обо мне</div>
+      <h1>Привет,</h1>
+      <p class="intro">Если вы читаете эту страницу, значит, задумали меняться. Возможно, мы знакомы, вы давно следите за мной, а может, меня посоветовали только вчера. В любом случае — рада, что вам захотелось узнать обо мне больше.</p>
+      <p class="intro" style="margin-top:20px">Я как-то написала, что «повидала некоторое дерьмо» — и это правда. За последние 10 лет я изменила свою жизнь на 180 градусов. Вот несколько фактов, которые делают меня не просто человеком с историей, а специалистом, который поможет измениться и вам.</p>
+    </div>
+    <div class="hero-round" style="background-image:url('img/about_round3.jpg');background-position:center center"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- аккордеон фактов -->
+  <div class="facts">
+
+    <details class="fact" open>
+      <summary><h2>Превратилась из тусовщицы в амбассадора велнеса</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Из человека с ежедневным алкоголем, без режима и без каких-либо рутин — питания, движения, сна — я превратилась в ту, кто ложится в 9, ест салат, медитирует и двигается каждый день. И искренне это любит. Не пью и не курю почти 6 лет.</p>
+        <p class="note">(Нет, я не буду заставлять вас ложиться в 9 и есть салат. Это моя версия нормы, а не универсальный рецепт.)</p>
+        <div class="means"><b>Это значит:</b> я знаю процесс изменений изнутри. Не жду от клиентов подвигов и не верю в «привычки за 21 день». Верю в маленькие шаги, в ценности и сильные стороны, в эксперименты — и в то, что откат это часть пути, а не провал.</div>
+      </div>
+    </details>
+
+    <details class="fact">
+      <summary><h2>Пришла от ненависти к себе к принятию тела и заботе о себе</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Анорексия в 17, с последствиями которой я жила 20 лет. Сейчас у меня ремиссия. Я научилась заботиться о себе даже тогда, когда я себе не нравлюсь. Чувствовать своё тело и потребности — и принимать их. Видеть свою ценность за пределами стандартов красоты.</p>
+        <div class="means"><b>Это значит:</b> с тем же теплом и терпением, что нашла к себе, помогаю и другим — услышать своё тело и разрешить себе быть.</div>
+      </div>
+    </details>
+
+    <details class="fact">
+      <summary><h2>Я не только это проживаю — я это изучаю</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Мало что интересует меня больше, чем я сама и тема изменений. За плечами 800 часов в УОМ, почти 1.5 года в ACE, поведенческие курсы Yale и Wesleyan, буддистские ретриты и много чего ещё. Моя практика строится на науке и вековых практиках, а не на силе воли и мотивационных цитатах.</p>
+        <div class="means"><b>Это значит:</b> я не выдам вам универсальный список привычек — хотя могу, я их все знаю. Вместо этого помогу разобраться, что происходит именно с вами, и найти то, что приживётся в вашей жизни.</div>
+      </div>
+    </details>
+
+    <details class="fact">
+      <summary><h2>Строю новую карьеру в 40 лет</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>После 15+ лет в маркетинге (была топ-менеджером в Look At Me, работала в Yandex, Afisha, BBDO, GroupM) я выгорела так, что выкарабкивалась почти 3 года. Зато разрешила себе стать хэлс-коучем. Сейчас моей практике 4.5 года, за плечами больше 1000 часов и 150 человек — в программах, группах и разовых сессиях.</p>
+        <div class="means"><b>Это значит:</b> я вижу маркетинг велнес-индустрии насквозь и не продаю вам «лучшую версию себя». А выгорание узнаю по первой ноте — там, где человек ещё уверен, что просто устал.</div>
+      </div>
+    </details>
+
+    <details class="fact">
+      <summary><h2>Поменяла страну 7 раз за 6 лет, а сейчас во второй эмиграции за год 🤡</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Из них 3 эмиграции: Индонезия в ковид, 2.5 года в США, потом Испания — которая отказала в ВНЖ, так что мы снова собрали чемоданы. В Белград. Жила в Москве, на Бали, на Яве, в Стамбуле, Майами, Роли, Барселоне. И везде привожу с собой свой образ жизни, адаптируя его под обстоятельства — а не наоборот.</p>
+        <div class="means"><b>Это значит:</b> переезды стали моей лабораторией устойчивости. Как не рассыпаться, когда рассыпаются планы. На что опираться, когда вокруг всё новое. Как отличать реальную боль от страданий, которые мы к ней сами доклеиваем.</div>
+      </div>
+    </details>
+
+    <details class="fact">
+      <summary><h2>А ещё я блогер</h2><span class="sign"></span></summary>
+      <div class="body">
+        <p>Веду канал «На балансе» и пишу в запрещённой сети — про сон, отдых, выгорание, привычки и про то, как изменения устроены на самом деле. Разбираю исследования и тренды: что работает, что просто маркетинг, а что вообще опасно.</p>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<!-- ФИНАЛ -->
+<div class="wrap">
+  <div class="cta">
+    <h2>Сложно найти запрос, который я бы не прожила — и не разложила потом по науке 🙂</h2>
+    <p>Если вы сейчас в войне с телом, в выгорании, в чемоданной жизни или в вечном «знаю, но не делаю» — у меня есть карта этой местности. Приходите исследовать и меняться. 🤍</p>
+    <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn">Написать мне</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-meta">
+      <div class="foot-col"><span class="foot-name">Хэлс-коуч Катя Стрельникова</span></div>
+      <div class="foot-col foot-links">
+        <a href="https://t.me/balancenorm" target="_blank" rel="noopener">Телеграм-канал «На балансе»</a>
+        <a href="https://www.instagram.com/katya.strelnikova/" target="_blank" rel="noopener">Инстаграм</a>
+      </div>
+      <div class="foot-col foot-legal">
+        ИП Стрельникова Екатерина Юрьевна<br>ИНН 504212029429<br>ОГРНИП 325508100300251
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
+  burger.addEventListener('click',()=>{menu.classList.toggle('open');document.body.classList.toggle('locked');});
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');document.body.classList.remove('locked');}));
+</script>
+</body>
+</html>

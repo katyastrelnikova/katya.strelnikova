@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Форматы и цены — Катя Стрельникова</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--white:#ffffff;--cream:#f7f4ee;--ink:#15140f;--ink-soft:#575349;--line:#e7e3da;--indigo:#4b3bd6;--indigo-deep:#3a2cc0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.05}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 44px}
+  @media(max-width:600px){.wrap{padding:0 22px}}
+  mark{background:var(--indigo);color:#fff;padding:.04em .12em;border-radius:5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .hl{color:var(--indigo)}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:16px 44px;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-family:'Montserrat';font-weight:800;font-size:17px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .logo-short{display:none}
+  .navlinks{display:flex;gap:24px;font-size:14px;font-weight:500}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .2s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.active{color:var(--indigo)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px}
+  @media(max-width:900px){.navlinks{display:none}.burger{display:flex}}
+  @media(max-width:600px){.nav-in{padding:14px 22px}.logo-full{display:none}.logo-short{display:inline}}
+  .mobile-menu{position:fixed;inset:0;z-index:99;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);visibility:hidden}
+  .mobile-menu.open{transform:translateX(0);visibility:visible}
+  .mobile-menu a{color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:30px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  body.locked{overflow:hidden}
+
+  .btn{display:inline-block;background:var(--indigo);color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;transition:transform .2s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--indigo-deep)}
+  .btn-ghost-light{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff}
+  .btn-ghost-light:hover{background:rgba(255,255,255,.1);border-color:#fff}
+
+  /* HERO страницы */
+  .page-hero{padding:150px 0 50px;display:grid;grid-template-columns:1fr auto;gap:50px;align-items:center}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);margin-bottom:20px}
+  .page-hero h1{font-size:clamp(40px,6vw,76px);margin-bottom:26px}
+  .page-hero .intro{font-size:clamp(17px,2vw,20px);color:var(--ink-soft);max-width:620px}
+  .hero-round{width:min(400px,42vw);aspect-ratio:1;border-radius:50%;background-size:cover;background-position:center top;flex-shrink:0}
+  @media(max-width:760px){.page-hero{grid-template-columns:1fr;gap:34px}.hero-round{width:220px;order:-1}}
+
+  /* аккордеон фактов */
+  .facts{border-top:1px solid var(--line);margin-top:30px}
+  .fact{border-bottom:1px solid var(--line)}
+  .fact summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:20px;padding:26px 0}
+  .fact summary::-webkit-details-marker{display:none}
+  .fact summary h2{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;line-height:1.15;font-size:clamp(20px,2.8vw,30px);flex:1;transition:color .2s}
+  .fact[open] summary h2,.fact summary:hover h2{color:var(--indigo)}
+  .fact .sign{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);position:relative;margin-top:4px;transition:border-color .2s,background .2s}
+  .fact summary:hover .sign,.fact[open] .sign{border-color:var(--indigo)}
+  .fact .sign::before,.fact .sign::after{content:'';position:absolute;top:50%;left:50%;width:12px;height:1.5px;background:var(--ink-soft);transform:translate(-50%,-50%);transition:transform .25s,background .2s}
+  .fact .sign::after{transform:translate(-50%,-50%) rotate(90deg)}
+  .fact summary:hover .sign::before,.fact summary:hover .sign::after,.fact[open] .sign::before,.fact[open] .sign::after{background:var(--indigo)}
+  .fact[open] .sign::after{transform:translate(-50%,-50%) rotate(0)}
+  .fact .body{padding:0 0 32px 50px;max-width:820px}
+  .fact .body p{color:var(--ink-soft);margin-bottom:14px;font-size:17px}
+  .means{margin-top:18px;padding-left:22px;border-left:3px solid var(--indigo);font-size:17px}
+  .means b{color:var(--ink);font-weight:700}
+  .note{font-size:14px;color:var(--ink-soft);font-style:italic;margin-top:10px}
+  @media(max-width:600px){.fact .body{padding-left:0}}
+
+  /* интро-текст страницы */
+  .lead-block{max-width:780px;padding:10px 0 20px}
+  .lead-block p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:18px}
+  .lead-block p strong,.lead-block p b{color:var(--ink);font-weight:600}
+  .lead-block .big{font-size:clamp(19px,2.2vw,22px);color:var(--ink);font-weight:500;line-height:1.5}
+
+  /* карточки тарифов */
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0 10px;align-items:start}
+  @media(max-width:860px){.plans{grid-template-columns:1fr}}
+  .plan{border:1px solid var(--line);border-radius:24px;padding:40px 36px;display:flex;flex-direction:column;height:100%}
+  .plan.feature{background:var(--ink);border-color:var(--ink);color:#fff}
+  .plan .tag{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);margin-bottom:16px}
+  .plan.feature .tag{color:#a99cff}
+  .plan h3{font-family:'Montserrat';font-weight:800;font-size:clamp(23px,2.8vw,30px);letter-spacing:-0.02em;line-height:1.1;margin-bottom:14px}
+  .plan .desc{color:var(--ink-soft);font-size:16px;margin-bottom:22px}
+  .plan.feature .desc{color:rgba(255,255,255,.72)}
+  .plan .feats{list-style:none;margin:0 0 26px;display:flex;flex-direction:column;gap:12px}
+  .plan .feats li{position:relative;padding-left:26px;font-size:15px;color:var(--ink-soft)}
+  .plan.feature .feats li{color:rgba(255,255,255,.82)}
+  .plan .feats li::before{content:'';position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--indigo)}
+  .plan.feature .feats li::before{background:#a99cff}
+  .plan .price-row{margin-top:auto}
+  .plan .price{font-family:'Montserrat';font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-0.02em;line-height:1.2}
+  .plan .price span{font-weight:600;font-size:17px;color:var(--ink-soft)}
+  .plan.feature .price span{color:rgba(255,255,255,.6)}
+  .plan .price.two{font-size:clamp(20px,2.4vw,25px)}
+  .plan .price-note{font-size:13px;color:var(--ink-soft);margin-top:6px}
+  .plan.feature .price-note{color:rgba(255,255,255,.55)}
+  .plan .price-label{font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#a99cff;margin-bottom:12px}
+  .plan .discount-in{font-size:14px;color:rgba(255,255,255,.72);margin-top:16px;line-height:1.5;padding-top:16px;border-top:1px solid rgba(255,255,255,.14)}
+  .plan .discount-in b{color:#fff;font-weight:600}
+  .plan .btn{margin-top:22px;display:block;width:100%;text-align:center}
+  .plan .btn-dark{background:#fff;color:var(--ink)}
+  .plan .btn-dark:hover{background:#f0ede6}
+
+  /* блок «как устроено» внутри feature */
+  .howto{margin:14px 0 22px}
+  .howto .hh{font-family:'Montserrat';font-weight:700;font-size:14px;letter-spacing:.02em;color:#a99cff;margin-bottom:12px}
+
+  /* плашка скидки */
+  .discount{background:var(--cream);border-radius:16px;padding:20px 26px;font-size:16px;color:var(--ink);margin:30px 0}
+  .discount b{color:var(--indigo)}
+
+  /* список «кому подойдёт» */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;margin:24px 0}
+  .fit div{position:relative;padding-left:28px;color:var(--ink-soft);font-size:16px}
+  .fit div::before{content:'→';position:absolute;left:0;top:0;color:var(--indigo);font-weight:700}
+  @media(max-width:600px){.fit{grid-template-columns:1fr}}
+
+  /* врезка с плашкой */
+  .banner{max-width:900px;margin:24px 0 8px}
+  .banner p{font-family:'Montserrat';font-weight:700;font-size:clamp(20px,2.6vw,28px);line-height:1.7;letter-spacing:-0.01em;color:var(--ink)}
+  .banner mark{background:var(--indigo);color:#fff;padding:.1em .18em;border-radius:6px;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.1}
+
+  /* блок текст + фото (как на главной) */
+  .split{display:grid;grid-template-columns:1fr .82fr;gap:56px;align-items:stretch;padding:30px 0}
+  .split>div:first-child{display:flex;flex-direction:column;justify-content:center}
+  .split.flip .split-ph{order:-1}
+  .split-ph{border-radius:22px;background-size:cover;background-position:center 15%;min-height:460px}
+  .split p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:16px}
+  .split p.big{font-size:clamp(19px,2.2vw,22px);color:var(--ink);font-weight:500;line-height:1.5}
+  @media(max-width:820px){.split{grid-template-columns:1fr;gap:28px}.split.flip .split-ph{order:0}.split-ph{max-width:420px;aspect-ratio:3/4;min-height:0}}
+
+  /* крупная врезка-цитата */
+  .pullquote{max-width:900px;margin:56px 0;font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;font-size:clamp(26px,4.2vw,46px);line-height:1.12;color:var(--ink)}
+  .pullquote .after{display:block;font-family:'Golos Text';font-weight:400;font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);line-height:1.6;margin-top:22px;max-width:680px;letter-spacing:0}
+
+  /* список-approaches (доказательные подходы) */
+  .methods{background:var(--cream);border-radius:24px;padding:40px 44px;margin:36px 0}
+  .methods .mh{font-family:'Montserrat';font-weight:800;font-size:clamp(22px,2.8vw,30px);letter-spacing:-0.01em;margin-bottom:26px;line-height:1.15}
+  .methods ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 40px}
+  .methods li{position:relative;padding-left:26px;color:var(--ink-soft);font-size:16px}
+  .methods li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--indigo)}
+  .methods .after{margin-top:24px;font-size:16px;color:var(--ink-soft)}
+  @media(max-width:600px){.methods{padding:32px 24px}.methods ul{grid-template-columns:1fr}}
+
+  /* секционный заголовок */
+  .sec-head{font-size:clamp(26px,3.6vw,40px);margin:70px 0 30px;line-height:1.1;font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em}
+  .sec-intro{max-width:720px;color:var(--ink-soft);font-size:18px;margin:-16px 0 30px}
+  .proof{background:var(--cream);border-radius:20px;padding:32px 36px;margin:36px 0}
+  .proof p{font-size:17px;color:var(--ink-soft);max-width:640px;margin-bottom:18px}
+  .proof-links{display:flex;gap:28px;flex-wrap:wrap}
+  .proof-links a{font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--indigo);text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+  .proof-links a .arr{transition:transform .2s}
+  .proof-links a:hover{color:var(--indigo-deep)}
+  .proof-links a:hover .arr{transform:translateX(4px)}
+  @media(max-width:600px){.proof{padding:28px 24px}}
+
+  /* чеклист «узнаёте себя» */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .check{display:flex;gap:14px;align-items:flex-start;background:var(--cream);border-radius:14px;padding:18px 20px;font-size:16px;color:var(--ink)}
+  .check .q{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--indigo);color:#fff;font-family:'Montserrat';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  @media(max-width:600px){.checks{grid-template-columns:1fr}}
+
+  /* инлайн-ссылка */
+  .inline-link{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--indigo);text-decoration:none}
+  .inline-link .arr{transition:transform .2s}
+  .inline-link:hover{color:var(--indigo-deep)}
+  .inline-link:hover .arr{transform:translateX(4px)}
+
+  /* приглашение «приходите, если» */
+  .invite{max-width:860px;margin:40px 0}
+  .invite-big{font-family:'Montserrat';font-weight:800;letter-spacing:-0.02em;font-size:clamp(24px,3.6vw,38px);line-height:1.18;color:var(--ink);margin-bottom:22px}
+  .invite-rest{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);line-height:1.6}
+
+  /* финальный разворот «вам ко мне, если» */
+  .wide-text{max-width:780px;margin:30px 0}
+  .wide-text p{font-size:clamp(17px,1.9vw,19px);color:var(--ink-soft);margin-bottom:16px}
+  .wide-text p.accent{color:var(--ink);font-weight:500}
+
+  /* финал */
+  .cta{background:var(--ink);color:#fff;border-radius:28px;padding:70px 56px;text-align:left;margin:80px 0}
+  .cta h2{color:#fff;font-size:clamp(28px,4vw,44px);max-width:22ch;margin:0 0 20px}
+  .cta p{color:rgba(255,255,255,.72);max-width:600px;margin:0 0 30px;font-size:18px}
+  @media(max-width:600px){.cta{padding:48px 26px}}
+
+  footer{background:var(--cream);padding:70px 0 44px}
+  .foot-meta{color:var(--ink-soft);font-size:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+  @media(max-width:720px){.foot-meta{grid-template-columns:1fr;gap:18px}}
+  .foot-name{font-family:'Montserrat';font-weight:700;color:var(--ink)}
+  .foot-links{display:flex;flex-direction:column;gap:8px}
+  .foot-links a{color:var(--ink-soft);text-decoration:none}
+  .foot-links a:hover{color:var(--indigo)}
+  .foot-legal{line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="index.html" class="logo"><span class="logo-full">Хэлс-коуч Катя Стрельникова</span><span class="logo-short">Катя Стрельникова</span></a>
+    <div class="navlinks">
+      
+      <a href="about.html">Обо мне</a><a href="podhod.html">Мой подход</a><a href="ceny.html" class="active">Форматы</a><a href="kontent.html">Контент</a><a href="media.html">Для медиа</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Обо мне</a>
+  <a href="podhod.html">Мой подход</a>
+  <a href="ceny.html">Форматы и цены</a>
+  <a href="kontent.html">Бесплатный контент</a>
+  <a href="media.html">Для медиа</a>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="page-hero" style="grid-template-columns:1fr;padding-bottom:16px">
+    <div>
+      <div class="kicker">Форматы и цены</div>
+      <h1>Со мной можно работать двумя способами</h1>
+      <p class="intro" style="margin-top:22px">Прийти на разовую стратегическую сессию с конкретным вопросом. Или пойти в глубокую работу над образом жизни. Ниже про оба.</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- карточки тарифов -->
+  <div class="plans">
+
+    <!-- разовая -->
+    <div class="plan">
+      <div class="tag">Разовая</div>
+      <h3>Разовая коуч-сессия</h3>
+      <p class="desc">Для тех, кто пока не готов в долгую, хочет разобраться сам и «только спросить». Берём один ваш запрос и разбираем его. Часто это просто возможность подумать вслух про состояние, энергию, отдых — там, где больше не с кем, — и уйти с ясностью, а не с «поговорили».</p>
+      <ul class="feats">
+        <li>Встреча в Zoom, 90 минут</li>
+        <li>Плюс асинхронная работа с целью в чате до встречи</li>
+      </ul>
+      <div class="price-row">
+        <div class="price">18 000 ₽ <span>/ $225</span></div>
+        <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn">Записаться на сессию</a>
+      </div>
+    </div>
+
+    <!-- программа -->
+    <div class="plan feature">
+      <div class="tag">Программа</div>
+      <h3>Программа изменения образа жизни</h3>
+      <p class="desc">Не программа по питанию или тренировкам, где я рассказываю, что делать. Вы и без меня знаете, что надо «побольше спать, двигаться, есть овощей» — но почему-то не делаете. Мы идём глубже: разбираемся, как вы хотите жить и чувствовать себя, что мешает и что помогает, и выстраиваем образ жизни, который держится.</p>
+      <div class="howto">
+        <div class="hh">Как устроено</div>
+        <ul class="feats">
+          <li>Работа в долгую: первый контракт на 3 месяца, с большинством работаем от 6. Никаких «изменись за месяц».</li>
+          <li>Встречаемся раз в неделю: обсуждаем сложности и радости, планируем шаги, двигаемся к целям.</li>
+          <li>Два формата на выбор: только встречи — или встречи плюс ежедневная поддержка в чате.</li>
+        </ul>
+      </div>
+      <div class="price-row">
+        <div class="price-label">В месяц</div>
+        <div class="price two">48 000 ₽ <span>/ $600 · только встречи</span></div>
+        <div class="price two" style="margin-top:8px">68 000 ₽ <span>/ $850 · встречи + чат</span></div>
+        <div class="discount-in">При оплате сразу за несколько месяцев — скидка: <b>за 3 месяца 10%</b>, <b>за 6 месяцев 15%</b>.</div>
+        <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn btn-dark">Записаться на встречу-знакомство</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- отзывы и кейсы -->
+  <div class="proof">
+    <p>Если для вас важны доказательства, а не слова: у меня много отзывов и несколько разобранных кейсов. Почитайте — вдруг узнаете в них себя.</p>
+    <div class="proof-links">
+      <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTYwMzQ1MTI4ODc1OTI1?avpt=d2loaGRoeTN2cGl5" target="_blank" rel="noopener">Отзывы <span class="arr">→</span></a>
+      <a href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4NjMyOTM3NTUwMDM3OTE1?jplx=cWEyd21ndjV5aXA1" target="_blank" rel="noopener">Кейсы <span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- кому подойдёт программа -->
+  <h2 class="sec-head">Кому подойдёт программа</h2>
+  <div class="fit">
+    <div>Тем, кто уже всё перепробовал и разочаровался</div>
+    <div>Тем, у кого мало времени на себя, но есть понимание, что это важно</div>
+    <div>Тем, кому не подходят ограничения и запреты за свои же деньги</div>
+    <div>Тем, кто готов к глубоким, долгосрочным изменениям</div>
+    <div>Тем, кому нужна экспертиза, но ненавязчивая</div>
+  </div>
+
+  <!-- как оплатить -->
+  <h2 class="sec-head">Как оплатить</h2>
+  <div class="wide-text">
+    <p>Оплата на российскую карту, swift-переводом, через PayPal или в USDT. <em>В общем, как вам удобно.</em></p>
+  </div>
+
+
+</div>
+
+<!-- ФИНАЛ -->
+<div class="wrap">
+  <div class="cta">
+    <h2>Не уверены, что вам подходит?</h2>
+    <p>Приходите на бесплатную встречу-знакомство. Это не коуч-сессия, а возможность посмотреть друг на друга: поговорить, понять, могу ли я быть полезна и подходит ли вам этот формат. 30 минут, без обязательств.</p>
+    <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn">Записаться на встречу-знакомство</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-meta">
+      <div class="foot-col"><span class="foot-name">Хэлс-коуч Катя Стрельникова</span></div>
+      <div class="foot-col foot-links">
+        <a href="https://t.me/balancenorm" target="_blank" rel="noopener">Телеграм-канал «На балансе»</a>
+        <a href="https://www.instagram.com/katya.strelnikova/" target="_blank" rel="noopener">Инстаграм</a>
+      </div>
+      <div class="foot-col foot-legal">
+        ИП Стрельникова Екатерина Юрьевна<br>ИНН 504212029429<br>ОГРНИП 325508100300251
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
+  burger.addEventListener('click',()=>{menu.classList.toggle('open');document.body.classList.toggle('locked');});
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');document.body.classList.remove('locked');}));
+</script>
+</body>
+</html>

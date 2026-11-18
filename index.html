@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Катя Стрельникова — хэлс-коуч</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;--cream:#f7f4ee;--ink:#15140f;--ink-soft:#575349;--line:#e7e3da;
+    --indigo:#4b3bd6;--indigo-deep:#3a2cc0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Golos Text',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.disp{font-family:'Montserrat',sans-serif;font-weight:800;letter-spacing:-0.02em;line-height:1.05}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 44px}
+  @media(max-width:600px){.wrap{padding:0 22px}}
+  mark{background:var(--indigo);color:#fff;padding:.08em .14em;border-radius:5px;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.1}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(21,20,15,0);transition:background .3s}
+  nav.solid{background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:18px 44px;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-family:'Montserrat';font-weight:800;font-size:17px;letter-spacing:-0.02em;color:#fff;transition:color .3s;white-space:nowrap}
+  nav.solid .logo{color:var(--ink)}
+  .logo-short{display:none}
+  @media(max-width:600px){.logo-full{display:none}.logo-short{display:inline}}
+  .navlinks{display:flex;gap:24px;font-size:14px;font-weight:500}
+  .navlinks a{color:rgba(255,255,255,.85);text-decoration:none;transition:color .2s}
+  nav.solid .navlinks a{color:var(--ink-soft)}
+  .navlinks a:hover{color:#fff}nav.solid .navlinks a:hover{color:var(--ink)}
+  .nav-cta{background:var(--indigo);color:#fff;padding:10px 18px;border-radius:100px;font-weight:600;font-size:13px;text-decoration:none;transition:background .2s}
+  .nav-cta:hover{background:var(--indigo-deep)}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:#fff;transition:background .3s,transform .3s,opacity .2s;border-radius:2px}
+  nav.solid .burger span{background:var(--ink)}
+  @media(max-width:900px){.navlinks{display:none}.nav-desktop-cta{display:none}.burger{display:flex}}
+  @media(max-width:600px){.nav-in{padding:16px 22px}}
+  /* мобильное меню */
+  .mobile-menu{position:fixed;inset:0;z-index:99;background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);visibility:hidden}
+  .mobile-menu.open{transform:translateX(0);visibility:visible}
+  .mobile-menu a{color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:30px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  .mobile-menu a.mcta{color:var(--indigo);border:none;margin-top:24px}
+  .mobile-menu a.mcta mark{background:var(--indigo);color:#fff;padding:6px 20px;border-radius:100px;font-size:20px}
+  body.locked{overflow:hidden}
+
+  .btn{display:inline-block;background:var(--indigo);color:#fff;text-decoration:none;font-family:'Montserrat';font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;transition:transform .2s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--indigo-deep)}
+  .btn-ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}.btn-ghost:hover{background:var(--ink);color:#fff}
+  .btn-ghost-light{background:transparent;border:1.5px solid rgba(255,255,255,.6);color:#fff}.btn-ghost-light:hover{background:#fff;color:var(--ink)}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* HERO — фикс высоты и кроп по верху (рука сверху) */
+  .hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+  .hero .bg{position:absolute;inset:0;background:url('img/c_hero2_r.jpg') 70% top/cover}
+  .hero .scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.08) 56%)}
+  .hero .in{position:relative;width:100%;max-width:1240px;margin:0 auto;padding:120px 44px 64px}
+  .hero .block{width:66%;max-width:680px;min-width:min(100%,340px)}
+  .hero h1{color:#fff;font-size:clamp(26px,3.2vw,44px);margin-bottom:24px;line-height:1.5}
+  .hero .intro{color:rgba(255,255,255,.9);font-size:clamp(15px,1.5vw,17px);max-width:520px;margin-bottom:28px}
+  /* индикатор скролла */
+  .scrolldown{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.75);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+  .scrolldown .mouse{width:26px;height:42px;border:2px solid rgba(255,255,255,.6);border-radius:14px;position:relative}
+  .scrolldown .mouse::after{content:"";position:absolute;left:50%;top:7px;width:4px;height:7px;background:#fff;border-radius:3px;transform:translateX(-50%);animation:scrolldot 1.6s infinite}
+  @keyframes scrolldot{0%{opacity:0;top:7px}40%{opacity:1}80%{opacity:0;top:20px}100%{opacity:0}}
+  @media(max-width:900px){.hero .block{width:82%}}
+  @media(max-width:700px){
+    .hero .bg{background-position:58% top}
+    .hero .scrim{background:linear-gradient(to bottom,rgba(0,0,0,.35),rgba(0,0,0,.35) 30%,rgba(0,0,0,.82))}
+    .hero{align-items:flex-end}
+    .hero .in{padding:140px 22px 50px}
+    .hero .block{width:100%}
+    .scrolldown{display:none}
+  }
+
+  /* видео */
+  .videoband{background:var(--ink)}
+  .videoband .inner{max-width:1240px;margin:0 auto;padding:0 44px}
+  .video{aspect-ratio:16/8;background:#262219;border-radius:0 0 24px 24px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .video .ph{color:rgba(255,255,255,.35);font-size:14px;font-weight:600}
+  .video .play{position:absolute;width:84px;height:84px;border-radius:50%;background:var(--indigo);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
+  .video .play:hover{transform:scale(1.07)}
+  .video .play::after{content:"";border-left:24px solid #fff;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+  .video .cap{position:absolute;bottom:16px;left:20px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6)}
+  @media(max-width:600px){.videoband .inner{padding:0 22px}}
+
+  .section{padding:96px 0}
+  .section.cream{background:var(--cream)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--indigo);margin-bottom:18px}
+  h2{font-size:clamp(30px,5vw,56px);margin-bottom:0}
+
+  /* узнаёте себя */
+  .recog{display:grid;grid-template-columns:1fr .85fr;gap:60px;align-items:start}
+  @media(max-width:900px){.recog{grid-template-columns:1fr;gap:34px}}
+  .recog .pain{font-size:18px;color:var(--ink);margin:30px 0 34px;line-height:1.65}
+  .wants{display:grid;gap:14px}
+  .want{position:relative;background:var(--white);border-radius:16px;padding:22px 24px 22px 54px;font-size:16px;color:var(--ink-soft);line-height:1.55;box-shadow:0 2px 14px rgba(21,20,15,.05)}
+  .want::before{content:"“";position:absolute;left:18px;top:14px;color:var(--indigo);font-family:'Montserrat';font-size:40px;font-weight:800;line-height:1}
+  .want b{font-weight:700;color:var(--ink)}
+  .recog .photo{aspect-ratio:3/4;border-radius:20px;background:url('img/c_meditate_r.jpg') center top/cover;position:sticky;top:90px}
+  @media(max-width:900px){.recog .photo{position:static;aspect-ratio:4/3}}
+  .turn{margin-top:46px;font-size:19px;color:var(--ink);max-width:760px;line-height:1.6}
+
+  /* мой подход */
+  .editorial{display:grid;grid-template-columns:1fr 1.25fr;gap:56px;align-items:start}
+  @media(max-width:860px){.editorial{grid-template-columns:1fr;gap:24px}}
+  .editorial p{color:var(--ink-soft);margin-bottom:16px;font-size:17px}
+  .photo-duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+  .photo-duo .ph{aspect-ratio:3/4;border-radius:20px;background-size:cover;background-position:center top}
+  @media(max-width:620px){.photo-duo{grid-template-columns:1fr}}
+  .photo-wide{aspect-ratio:4/3;max-width:900px;margin:10px auto 0;border-radius:20px;background-size:cover;background-position:center center}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:22px;padding:38px;transition:border-color .2s,transform .2s;background:var(--white);text-decoration:none;color:inherit;display:block;position:relative}
+  .card:hover{border-color:var(--indigo);transform:translateY(-3px)}
+  .card .more{position:absolute;top:34px;right:34px;color:var(--indigo);font-family:'Montserrat';font-weight:800;font-size:20px;transition:transform .2s}
+  .card:hover .more{transform:translateX(3px)}
+  .card h3{font-size:25px;margin-bottom:12px}
+  .card .price{font-family:'Montserrat';font-weight:800;font-size:34px;margin:20px 0 6px}
+  .card .price .per{font-size:15px;font-weight:600;color:var(--ink-soft)}
+  .card p{color:var(--ink-soft);font-size:15px;margin-bottom:6px}
+  .card .tiny{font-size:13px;color:var(--ink-soft);margin-top:14px}
+  .card .link{display:inline-block;margin-top:16px;color:var(--indigo);font-weight:700;font-size:14px}
+
+  /* тёмная секция */
+  .dark{background:var(--ink);color:#fff}
+  .dark .kicker{color:#fff;opacity:.55}
+  .dark h2{color:#fff}
+  .start{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+  @media(max-width:820px){.start{grid-template-columns:1fr;gap:30px}}
+  .start3{display:grid;grid-template-columns:.85fr 1fr;gap:60px;align-items:start}
+  .start-photo{aspect-ratio:3/4;border-radius:20px;background-size:cover;background-position:center center;position:sticky;top:90px}
+  .start-body h2{font-size:clamp(26px,3.6vw,42px)}
+  .start-body .nav-cards{margin-top:36px}
+  @media(max-width:900px){.start3{grid-template-columns:1fr;gap:34px}.start-photo{position:static;aspect-ratio:4/3}}
+  .dark .sub{color:rgba(255,255,255,.72);font-size:18px;max-width:430px;margin:22px 0 30px;line-height:1.55}
+  .nav-cards{display:flex;flex-direction:column}
+  .nav-card{display:flex;justify-content:space-between;align-items:center;gap:30px;padding:22px 0;border-top:1px solid rgba(255,255,255,.14);text-decoration:none;color:#fff;transition:padding-left .2s}
+  .nav-card:hover{padding-left:10px}
+  .nav-card:last-child{border-bottom:1px solid rgba(255,255,255,.14)}
+  .nav-card .ct{display:flex;flex-direction:column;gap:7px}
+  .nav-card .t{display:block;font-family:'Montserrat';font-weight:700;font-size:19px}
+  .nav-card .d{display:block;color:rgba(255,255,255,.55);font-size:14px}
+  .nav-card .arr{color:#fff;font-size:22px;font-family:'Montserrat';transition:color .2s;flex-shrink:0}
+  .nav-card:hover .arr{color:#b9b2ff}
+
+  footer{background:var(--cream);padding:90px 0 44px;text-align:center}
+  .foot-big{font-family:'Montserrat';font-weight:800;font-size:clamp(30px,5vw,56px);line-height:1.0;letter-spacing:-0.02em;margin-bottom:40px;white-space:nowrap}
+  @media(max-width:600px){footer{text-align:left}.foot-big{white-space:normal}}
+  .foot-meta{margin-top:0;padding-top:34px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;text-align:left}
+  @media(max-width:720px){.foot-meta{grid-template-columns:1fr;gap:20px;text-align:center}}
+  .foot-name{font-family:'Montserrat';font-weight:700;color:var(--ink)}
+  .foot-links{display:flex;flex-direction:column;gap:8px}
+  .foot-links a{color:var(--ink-soft);text-decoration:none;transition:color .2s}
+  .foot-links a:hover{color:var(--indigo)}
+  .foot-legal{line-height:1.7}
+
+  .note{background:var(--indigo);color:#fff;font-size:13px;font-weight:600;text-align:center;padding:9px 20px}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-full">Хэлс-коуч Катя Стрельникова</span><span class="logo-short">Катя Стрельникова</span></div>
+    <div class="navlinks">
+      
+      <a href="about.html">Обо мне</a><a href="podhod.html">Мой подход</a><a href="ceny.html">Форматы</a><a href="kontent.html">Контент</a><a href="media.html">Для медиа</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Обо мне</a>
+  <a href="podhod.html">Мой подход</a>
+  <a href="ceny.html">Форматы и цены</a>
+  <a href="kontent.html">Бесплатный контент</a>
+  <a href="media.html">Для медиа</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bg"></div>
+  <div class="scrim"></div>
+  <div class="in">
+   <div class="block">
+    <h1>Помогаю проще относиться к&nbsp;изменениям, <mark>заботливее</mark> — к&nbsp;себе, <mark>с&nbsp;уважением</mark> — к&nbsp;потребностям и&nbsp;<mark>с&nbsp;принятием</mark> — к&nbsp;несовершенствам.</h1>
+    <p class="intro">Я — хэлс-коуч Катя Стрельникова. Помогаю выстраивать образ жизни, который переживёт переезды, кризисы и&nbsp;откаты, не&nbsp;через силу воли и&nbsp;запреты, а&nbsp;через понимание себя, разрешение себе, науку о&nbsp;поведении, эксперименты и&nbsp;маленькие шаги.</p>
+    <div class="btn-row">
+      <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn">Написать мне</a>
+      <a href="ceny.html" class="btn btn-ghost-light">Подробнее о форматах работы</a>
+    </div>
+   </div>
+  </div>
+</section>
+
+
+<!-- УЗНАЁТЕ СЕБЯ -->
+<section class="section cream">
+  <div class="wrap">
+    <div class="recog">
+      <div>
+        <h2>Узнаёте себя?</h2>
+        <p class="pain">Знаете, как надо, но не делаете. Живёте на автопилоте, как будто вашу жизнь живёт кто-то другой. Не понимаете, что значит «принять себя» и «сострадать себе», а умеете только «собираться». Вы сто раз начинали новую систему и бросали через неделю. И вам всё время кажется, что именно с вами что-то не так. Почему у всех получается, а у вас нет? Начинаете подумывать, что, может быть, вы просто безнадёжны...</p>
+        <div class="wants">
+          <div class="want"><b>Хочу</b> перестать держаться на силе воли и заставлять себя. Хочу устойчивые привычки и образ жизни, которые не рассыплются через месяц или при первом изменении.</div>
+          <div class="want"><b>Хочу</b>, чтобы ЗОЖ был в кайф, а не то скучно, то тяжело, то просто «надо». Хочу выбирать о себе заботиться. Чтобы в радость, а не ещё один пункт в списке дел.</div>
+          <div class="want"><b>Хочу</b> снова понимать, что чувствую и чего хочу, а не жить как в тумане. Научиться слышать своё тело и свои потребности и давать себе то, что необходимо.</div>
+          <div class="want"><b>Хочу</b> перестать чувствовать, что со мной что-то не так. Но при этом научиться заботиться о себе даже тогда, когда я себе не нравлюсь.</div>
+          <div class="want"><b>Хочу</b> порядок в голове и в жизни. Хочу быть свободной, счастливой и живой.</div>
+        </div>
+      </div>
+      <div class="photo"></div>
+    </div>
+    <p class="turn">Ко мне приходят за конкретным: начать высыпаться, навести порядок в еде, наконец задвигаться. А уходят с другим — с ясностью, возвращённым чувством себя, разрешением быть неидеальной и выбирать то, что реально хочется. Потому что дело никогда не в силе воли и не в чьей-то ущербности. А в подходе, мотивации и в том, на каком уровне искать решение.</p>
+    <div style="margin-top:28px"><a href="podhod.html" class="btn">Мой подход →</a></div>
+  </div>
+</section>
+
+<!-- МОЙ ПОДХОД -->
+<section class="section">
+  <div class="wrap">
+    <div class="kicker">Мой подход</div>
+    <div class="editorial">
+      <h2>Приключение, исследование, эксперимент</h2>
+      <div>
+        <p>Проблему нельзя решить на том уровне, на котором она возникла. На уровне поведения мы видим только симптомы — а решается всё обычно уровнем ниже, там, где смыслы и отношения с собой.</p>
+        <p>Я не выдам вам универсальный список привычек. Хотя могу — я их все знаю. Вместо этого помогу разобраться, что происходит именно с&nbsp;вами, и найти то, что приживётся в вашей жизни.</p>
+        <a href="podhod.html" class="btn btn-ghost" style="margin-top:10px">Подробнее о подходе →</a>
+      </div>
+    </div>
+    <div class="photo-duo">
+      <div class="ph" style="background-image:url('img/c_p2_r.jpg');background-position:center top"></div>
+      <div class="ph" style="background-image:url('img/c_newball_r.jpg');background-position:center top"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ФОРМАТЫ -->
+<section class="section cream">
+  <div class="wrap">
+    <div class="kicker">Форматы</div>
+    <h2>Как со мной можно поработать</h2>
+    <div class="cards">
+      <a href="ceny.html" class="card">
+        <span class="more">→</span>
+        <h3>Разовая сессия</h3>
+        <p>Для тех, кто хочет разобраться сам и «только спросить». Берём один запрос и разбираем его.</p>
+        <div class="price">18 000 ₽</div>
+        <p class="tiny">90 минут в Zoom + работа с целью в чате до встречи</p>
+        <span class="link">Подробнее →</span>
+      </a>
+      <a href="ceny.html" class="card">
+        <span class="more">→</span>
+        <h3>Программа</h3>
+        <p>Долгая, глубокая работа над образом жизни. От 3 месяцев, встречи раз в неделю.</p>
+        <div class="price">от 48 000 ₽ <span class="per">/ мес</span></div>
+        <p class="tiny">Два формата: только встречи или встречи + поддержка в чате</p>
+        <span class="link">Подробнее →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ТЁМНАЯ СЕКЦИЯ -->
+<section class="section dark">
+  <div class="wrap">
+    <div class="start3">
+      <div class="start-photo" style="background-image:url('img/c_p1b_r.jpg')"></div>
+      <div class="start-body">
+        <h2>Чтобы понять, по&nbsp;пути ли нам, можно начать с&nbsp;бесплатного знакомства — или с&nbsp;бесплатного контента</h2>
+        <a href="https://t.me/katyastrelnikova" target="_blank" rel="noopener" class="btn" style="margin-top:16px">Записаться на знакомство</a>
+        <div class="nav-cards">
+          <a href="kontent.html" class="nav-card"><span class="ct"><span class="t">Бесплатный контент</span><span class="d">Вебинары, практикумы, статьи и подкасты в открытом доступе</span></span><span class="arr">→</span></a>
+          <a href="podhod.html" class="nav-card"><span class="ct"><span class="t">Мой подход</span><span class="d">Особенности моего подхода</span></span><span class="arr">→</span></a>
+          <a href="about.html" class="nav-card"><span class="ct"><span class="t">Обо мне</span><span class="d">Почему я вообще этим занимаюсь</span></span><span class="arr">→</span></a>
+          <a href="ceny.html" class="nav-card"><span class="ct"><span class="t">Форматы и цены</span><span class="d">Как со мной можно поработать</span></span><span class="arr">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-big">В этот раз&nbsp;<mark>получится!</mark></div>
+    <div class="foot-meta">
+      <div class="foot-col">
+        <span class="foot-name">Хэлс-коуч Катя Стрельникова</span>
+      </div>
+      <div class="foot-col foot-links">
+        <a href="https://t.me/balancenorm" target="_blank" rel="noopener">Телеграм-канал «На балансе»</a>
+        <a href="https://www.instagram.com/katya.strelnikova/" target="_blank" rel="noopener">Инстаграм</a>
+      </div>
+      <div class="foot-col foot-legal">
+        ИП Стрельникова Екатерина Юрьевна<br>
+        ИНН 504212029429<br>
+        ОГРНИП 325508100300251
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  const onScroll=()=>{ if(window.scrollY>window.innerHeight-90) nav.classList.add('solid'); else nav.classList.remove('solid'); };
+  window.addEventListener('scroll',onScroll);onScroll();
+  const burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
+  burger.addEventListener('click',()=>{ menu.classList.toggle('open'); document.body.classList.toggle('locked'); });
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ menu.classList.remove('open'); document.body.classList.remove('locked'); }));
+</script>
+</body>
+</html>
